@@ -20,3 +20,5 @@ The numbers are below:
 ```
 
 Calculating the output by hand is very tedious. The numbers are too huge to fit in the ranges of ```int```, ```long```, ```long long int``` or even ```double```.
+
+## [Solution](karatsuba.cpp)
