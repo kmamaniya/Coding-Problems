@@ -36,3 +36,5 @@ abcabcabcababababc
 * Brackets are only part of syntax of writing repeated substring.
 
 * Input is always valid, so no need to check its validity.
+
+## [Solution](decompression.cpp)
