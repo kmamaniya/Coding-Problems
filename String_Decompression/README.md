@@ -1,6 +1,14 @@
+# String Decompression
+
 This is a problem from Google Tech Dev Guide for Advanced Programming. The link to the problem is [here](https://techdevguide.withgoogle.com/paths/advanced/compress-decompression)
 
-# The Challenge
+## Category
+
+> Recursion
+
+> String manipulation
+
+## The Challenge
 In this exercise, we are going to decompress a compressed string.
 
 The input is a compressed string of the format "`number[string]`" and the decompressed output form should be the string written number times. For example:
