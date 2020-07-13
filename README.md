@@ -4,3 +4,4 @@
 ## List of Problems
 1. [String Decomposition](String_Decompression/README.md)
 2. [Karatsuba_Algorithm](Karatsuba_Algorithm/README.md)
+3. [Merge Sort](Merge_Sort/README.md)
