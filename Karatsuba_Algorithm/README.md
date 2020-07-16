@@ -5,7 +5,7 @@ Karatsuba algorithm is an efficient way to multiply two numbers. The wiki link f
 ## Category
 > Divide and Conquer
 
->Advance Recursion 
+> Advance Recursion 
 
 ## The Challenge
 In this exercise, we are going to multiply two 64-digit numbers.

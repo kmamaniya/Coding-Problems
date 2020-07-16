@@ -7,6 +7,6 @@ The wiki link for the algorithm is [here](https://en.wikipedia.org/wiki/Merge_so
 ## Category
 > Divide and Conquer
 
->Advance Recursion 
+> Advance Recursion 
 
 ## [Solution](merge_sort.cpp)
