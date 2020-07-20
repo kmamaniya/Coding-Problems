@@ -1,119 +1,114 @@
-#include "iostream"
+#include <iostream>
 #include <bits/stdc++.h>
+#include<string>
 
 using namespace std;
 
+string operator+(string a, string b){
+    string str = "";
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
 
-/*  
-    Adds two decimal digits
-*/
-string addChar(const char &a, const char &b, bool &carry){
-    int ans = (a - '0') + (b - '0') + (carry ? 1 : 0);
-    if(ans > 9){
-        ans -= 10;
-        carry = true;
+    int size = min(a.size(), b.size());
+    int carry = 0;
+
+    int i = 0;
+    while(i < size){
+        int add = (a[i] + b[i] + carry - '0');
+        carry = 0;
+        if(add > '9'){
+            add -= 10;
+            ++carry;
+        }
+        str.append(1, (char)add);
+        ++i;
     }
-    else{
-        carry = false;
-    }
-
-    return to_string(ans);
-}
-
-/*
-    Subtracts two decimal digits 
-*/
-string subChar(const char &a, const char &b, bool &borrow){
-    int ans = (a - '0') - (b - '0') - (borrow ? 1 : 0);
-    if(ans < 0){
-        ans += 10;
-        borrow = true;
-    }
-    else{
-        borrow = false;
-    }
-
-    return to_string(ans);
-}
-
-/*
-    Adds two decimal strings with carry support
-*/
-string addStrings(const string &a, const string &b, bool &carry){
     
-    string addition = "";
-    int ctr_a = a.size() - 1;
-    int ctr_b = b.size() - 1;
-
-    while(ctr_a >= 0 && ctr_b >= 0){
-        addition = addChar(a[ctr_a], b[ctr_b], carry) + addition;
-        --ctr_b;
-        --ctr_a;
+    while(i < max(a.size(), b.size())){
+        int add = '0';
+        if(i < a.size()){     
+            add = (a[i] + carry);
+            carry = 0;
+            if(add > '9'){
+                add -= 10;
+                ++carry;
+            }
+        }
+        else{
+            add = (b[i] + carry);
+            carry = 0;
+            if(add > '9'){
+                add -= 10;
+                ++carry;
+            }
+        }
+        str.append(1, (char)add);
+        ++i; 
     }
-
-    while(ctr_a >= 0){
-        addition = addChar(a[ctr_a], '0', carry) + addition;
-        --ctr_a;
-    }
-
-    while(ctr_b >= 0){
-        addition = addChar(b[ctr_b], '0', carry) + addition;
-        --ctr_b;
-    }
-
     if(carry){
-        addition = "1" + addition;
-        carry = false;
+        str.append(1, '0' + carry);
     }
 
-    return addition;
+    reverse(str.begin(), str.end());
+
+    return str;
 }
 
+string operator-(string a, string b){
+    string str = "";
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
 
-/*
-    Subtracts two decimal strings with borrow support
-*/
-string subStrings(const string &a, const string &b, bool &borrow ){
+    int size = min(a.size(), b.size());
+    int borrow = 0;
+
+    int i = 0;
+    while(i < size){
+        int sub = (a[i] - b[i] - borrow + '0');
+        borrow = 0;
+        if(sub < '0'){
+            sub += 10;
+            ++borrow;
+        }
+        str.append(1, (char)sub);
+        ++i;
+    }
     
-    string subtraction = "";
-    int ctr_a = a.size() - 1;
-    int ctr_b = b.size() - 1;
-
-    while(ctr_a >= 0 && ctr_b >= 0){
-        subtraction = subChar(a[ctr_a], b[ctr_b], borrow) + subtraction;
-        --ctr_b;
-        --ctr_a;
+    while(i < max(a.size(), b.size())){
+        int sub = '0';
+        if(i < a.size()){     
+            sub = (a[i] - borrow);
+            borrow = 0;
+            if(sub < '0'){
+                sub += 10;
+                ++borrow;
+            }
+        }
+        else{
+            sub = (b[i] + borrow);
+            borrow = 0;
+            if(sub < '0'){
+                sub += 10;
+                ++borrow;
+            }
+        }
+        str.append(1, (char)sub);
+        ++i; 
     }
+    reverse(str.begin(), str.end());
 
-    while(ctr_a >= 0){
-        subtraction = subChar(a[ctr_a], '0', borrow) + subtraction;
-        --ctr_a;
-    }
-
-    while(ctr_b >= 0){
-        subtraction = subChar('0', b[ctr_b], borrow) + subtraction;
-        --ctr_b;
-    }
-
-    return subtraction;
+    return str;
 }
 
-/*
-    Multiply two numbers using Karatsuba algorithm
-    X = a * 10^m + b
-    Y = c * 10^m + d
-
-    X . Y = a*c * 10^(2m) + (a*d + b*c) * 10^m + b*d
-*/
-string multiplyStrings(string &s1, string &s2) {
+string operator*(string s1, string s2) {
     
     // Equalizing length of both strings by pending zeroes
     if(s1.size() != s2.size()){
         if(s1.size() > s2.size()){
-            s2 = string(s1.size() - s2.size(), '0') + s2;
+            s2 = string(s1.size() - s2.size(), '0').append(s2);
         }
         else{
-            s1 = string(s2.size() - s1.size(), '0') + s1;
+            s1 = string(s2.size() - s1.size(), '0').append(s1);
         }
     }
 
@@ -128,23 +123,19 @@ string multiplyStrings(string &s1, string &s2) {
     }
 
 
-    bool carry = false, borrow = false;
-
     string a = s1.substr(0, s1.size()/2);
     string b = s1.substr(s1.size()/2);
     string c = s2.substr(0, s1.size()/2);
     string d = s2.substr(s1.size()/2);
 
-    string ac = multiplyStrings(a,c);
-    string bd = multiplyStrings(b,d);
+    string ac = (a*c);
+    string bd = (b*d);
 
-    string a_plus_b = addStrings(a, b, carry);
-    string c_plus_d = addStrings(c, d, carry);
+    string a_plus_b = a + b;
+    string c_plus_d = c + d;
+    string ad_plus_bc = (a_plus_b * c_plus_d) - ac - bd;
 
-    // ad + bc = (a + b)(c + d) - ac - bd
-    string ad_plus_bc = subStrings(subStrings(multiplyStrings(a_plus_b, c_plus_d), ac, borrow) , bd, borrow);
-
-    return addStrings(ac + string(2*(s1.size() - s1.size()/2), '0'), addStrings(ad_plus_bc + std::string(s1.size() - s1.size()/2, '0'), bd, carry), carry);
+    return (ac.append(2*(s1.size() - s1.size()/2), '0') + ad_plus_bc.append(s1.size() - s1.size()/2, '0') +  bd);
     
 }
 
@@ -152,8 +143,7 @@ int main() {
     string a = "3141592653589793238462643383279502884197169399375105820974944592";
     string b = "2718281828459045235360287471352662497757247093699959574966967627";
 
-    cout << multiplyStrings(a,b) << endl;
-    
+    cout << (a*b) << endl;
     cout << "success" << endl;
     return 0;
 }
